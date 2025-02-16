@@ -1,258 +1,347 @@
-// declaração de variáveis
-const question = document.querySelector('#question');
-const answerBox = document.querySelector('#answers-box');
-const quizzContainer = document.querySelector('#quizz-container');
-const scoreContainer = document.querySelector('#score-container');
-const letters = ['a', 'b', 'c', 'd', 'e'];
+const questionsByCategory = {
+  conhecimentos_gerais: [
+    {
+      question: 'PHP foi desenvolvido para qual fim?',
+      answers: [
+        { answer: 'Back-End', correct: true },
+        { answer: 'Front-End', correct: false },
+        { answer: 'Sistema operacional', correct: false },
+        { answer: 'Banco de dados', correct: false },
+      ]
+    },
+    {
+      question: 'Qual empresa desenvolveu o sistema operacional Windows?',
+      answers: [
+        { answer: 'Apple', correct: false },
+        { answer: 'Microsoft', correct: true },
+        { answer: 'Google', correct: false },
+        { answer: 'IBM', correct: false },
+      ]
+    },
+    {
+      question: 'O que significa a sigla CPU?',
+      answers: [
+        { answer: 'Central Processing Unit', correct: true },
+        { answer: 'Computer Personal Unit', correct: false },
+        { answer: 'Control Processing Utility', correct: false },
+        { answer: 'Central Personal Unit', correct: false },
+      ]
+    },
+    {
+      question: 'Qual navegador foi criado pela empresa Google?',
+      answers: [
+        { answer: 'Firefox', correct: false },
+        { answer: 'Edge', correct: false },
+        { answer: 'Chrome', correct: true },
+        { answer: 'Safari', correct: false },
+      ]
+    },
+    {
+      question: 'Quem é conhecido como o pai da computação?',
+      answers: [
+        { answer: 'Alan Turing', correct: true },
+        { answer: 'Bill Gates', correct: false },
+        { answer: 'Steve Jobs', correct: false },
+        { answer: 'Charles Babbage', correct: false },
+      ]
+    }
+  ],
+  matematica: [
+    {
+      question: 'Quanto é 2 + 2?',
+      answers: [
+        { answer: '4', correct: true },
+        { answer: '3', correct: false },
+        { answer: '5', correct: false },
+      ]
+    },
+    {
+      question: 'Qual é o resultado de 5 × 6?',
+      answers: [
+        { answer: '30', correct: true },
+        { answer: '25', correct: false },
+        { answer: '20', correct: false },
+      ]
+    },
+    {
+      question: 'Qual é o valor de π (pi) arredondado para duas casas decimais?',
+      answers: [
+        { answer: '3.14', correct: true },
+        { answer: '3.16', correct: false },
+        { answer: '3.10', correct: false },
+      ]
+    },
+    {
+      question: 'Se um triângulo tem lados de 3, 4 e 5, ele é um triângulo?',
+      answers: [
+        { answer: 'Retângulo', correct: true },
+        { answer: 'Equilátero', correct: false },
+        { answer: 'Isósceles', correct: false },
+      ]
+    },
+    {
+      question: 'Qual é a raiz quadrada de 81?',
+      answers: [
+        { answer: '9', correct: true },
+        { answer: '8', correct: false },
+        { answer: '7', correct: false },
+      ]
+    }
+  ],
+  historia: [
+    {
+      question: 'Quem foi o primeiro presidente do Brasil?',
+      answers: [
+        { answer: 'Deodoro da Fonseca', correct: true },
+        { answer: 'Getúlio Vargas', correct: false },
+        { answer: 'Juscelino Kubitschek', correct: false },
+        { answer: 'Dom Pedro II', correct: false },
+      ]
+    },
+    {
+      question: 'Em que ano ocorreu a Revolução Francesa?',
+      answers: [
+        { answer: '1789', correct: true },
+        { answer: '1804', correct: false },
+        { answer: '1750', correct: false },
+        { answer: '1815', correct: false },
+      ]
+    },
+    {
+      question: 'Quem foi o líder do movimento pelos direitos civis nos EUA na década de 1960?',
+      answers: [
+        { answer: 'Martin Luther King Jr.', correct: true },
+        { answer: 'Malcolm X', correct: false },
+        { answer: 'Abraham Lincoln', correct: false },
+        { answer: 'John F. Kennedy', correct: false },
+      ]
+    },
+    {
+      question: 'Qual foi o nome da embarcação usada por Pedro Álvares Cabral ao chegar ao Brasil?',
+      answers: [
+        { answer: 'Nau Capitânia', correct: true },
+        { answer: 'Santa Maria', correct: false },
+        { answer: 'São Gabriel', correct: false },
+        { answer: 'Endeavour', correct: false },
+      ]
+    },
+    {
+      question: 'Quem foi responsável pela unificação da Alemanha no século XIX?',
+      answers: [
+        { answer: 'Otto von Bismarck', correct: true },
+        { answer: 'Napoleão Bonaparte', correct: false },
+        { answer: 'Karl Marx', correct: false },
+        { answer: 'Genghis Khan', correct: false },
+      ]
+    }
+  ],
+  geografia: [
+    {
+      question: 'Qual é o maior oceano do mundo?',
+      answers: [
+        { answer: 'Oceano Pacífico', correct: true },
+        { answer: 'Oceano Atlântico', correct: false },
+        { answer: 'Oceano Índico', correct: false },
+        { answer: 'Oceano Ártico', correct: false },
+      ]
+    },
+    {
+      question: 'Qual é o país mais populoso do mundo?',
+      answers: [
+        { answer: 'China', correct: true },
+        { answer: 'Índia', correct: false },
+        { answer: 'Estados Unidos', correct: false },
+        { answer: 'Brasil', correct: false },
+      ]
+    },
+    {
+      question: 'Qual é a capital da Austrália?',
+      answers: [
+        { answer: 'Canberra', correct: true },
+        { answer: 'Sydney', correct: false },
+        { answer: 'Melbourne', correct: false },
+        { answer: 'Brisbane', correct: false },
+      ]
+    },
+    {
+      question: 'O Monte Everest está localizado em qual continente?',
+      answers: [
+        { answer: 'Ásia', correct: true },
+        { answer: 'Europa', correct: false },
+        { answer: 'América do Sul', correct: false },
+        { answer: 'África', correct: false },
+      ]
+    },
+    {
+      question: 'Qual é o maior país em extensão territorial?',
+      answers: [
+        { answer: 'Rússia', correct: true },
+        { answer: 'Canadá', correct: false },
+        { answer: 'China', correct: false },
+        { answer: 'Estados Unidos', correct: false },
+      ]
+    }
+  ],
+  idiomas: [
+    {
+      question: 'Qual é o idioma mais falado no mundo?',
+      answers: [
+        { answer: 'Inglês', correct: false },
+        { answer: 'Chinês mandarim', correct: true },
+        { answer: 'Espanhol', correct: false },
+        { answer: 'Hindi', correct: false },
+      ]
+    },
+    {
+      question: 'O alemão é o idioma oficial de qual país?',
+      answers: [
+        { answer: 'Alemanha', correct: true },
+        { answer: 'França', correct: false },
+        { answer: 'Itália', correct: false },
+        { answer: 'Espanha', correct: false },
+      ]
+    },
+    {
+      question: 'Qual é a língua oficial do Brasil?',
+      answers: [
+        { answer: 'Português', correct: true },
+        { answer: 'Espanhol', correct: false },
+        { answer: 'Inglês', correct: false },
+        { answer: 'Francês', correct: false },
+      ]
+    },
+    {
+      question: 'Qual destes idiomas usa o alfabeto cirílico?',
+      answers: [
+        { answer: 'Russo', correct: true },
+        { answer: 'Inglês', correct: false },
+        { answer: 'Alemão', correct: false },
+        { answer: 'Italiano', correct: false },
+      ]
+    },
+    {
+      question: 'Como se diz "obrigado" em francês?',
+      answers: [
+        { answer: 'Merci', correct: true },
+        { answer: 'Gracias', correct: false },
+        { answer: 'Danke', correct: false },
+        { answer: 'Thank you', correct: false },
+      ]
+    }
+  ]
+};
+
+
+let generatedQuestions = [];
+let currentSelectionIndex = 0;
 let points = 0;
 let actualQuestion = 0;
+const letters = ['a', 'b', 'c', 'd', 'e'];
 
-// perguntas
-const questions = [
-  {
-    question: 'PHP foi desenvolvido para qual fim?',
-    answers: [
-      {
-        answer: 'Back-End',
-        correct: true,
-      },
-      {
-        answer: 'Front-End',
-        correct: false,
-      },
-      {
-        answer: 'Sistema operacional',
-        correct: false,
-      },
-      {
-        answer: 'Banco de dados',
-        correct: false,
-      },
-    ],
-  },
-  {
-    question: 'Uma forma de declarar variável em JavaScript:',
-    answers: [
-      {
-        answer: '$var',
-        correct: false,
-      },
-      {
-        answer: 'var',
-        correct: true,
-      },
-      {
-        answer: '@var',
-        correct: false,
-      },
-      {
-        answer: '#let',
-        correct: false,
-      },
-    ],
-  },
-  {
-    question: 'Qual o seletor de id no CSS?',
-    answers: [
-      {
-        answer: '#',
-        correct: true,
-      },
-      {
-        answer: '.',
-        correct: false,
-      },
-      {
-        answer: '@',
-        correct: false,
-      },
-      {
-        answer: '/',
-        correct: false,
-      },
-    ],
-  },
-];
+document.getElementById('quiz-config').addEventListener('submit', function (e) {
+  e.preventDefault();
 
-// substituição do quizz para a primeira pergunta
-function init() {
-  // criar primeira pergunta
-  createQuestion(0);
-}
+  const totalQuestions = parseInt(document.getElementById('total-questions').value);
+  const selectedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked'))
+    .map(c => c.value);
 
-// cria uma pergunta
-function createQuestion(i) {
-  // limpar questão anterior
-  const oldButtons = answerBox.querySelectorAll('button');
-  oldButtons.forEach((btn) => {
-    btn.remove();
-  });
+  // Gerar questões aleatórias
+  generatedQuestions = selectedCategories
+    .flatMap(category => questionsByCategory[category])
+    .sort(() => Math.random() - 0.5)
+    .slice(0, totalQuestions);
 
-  // alterar texto da pergunta
-  const questionText = question.querySelector('#question-text');
-  const questionNumber = question.querySelector('#question-number');
-
-  questionText.textContent = questions[i].question;
-  questionNumber.textContent = i + 1;
-
-  // inserir alternativas
-  questions[i].answers.forEach((answer, index) => {
-    // cria template botão quizz
-    const answerTemplate = document.querySelector('.answer-template').cloneNode(true);
-
-    const letterBtn = answerTemplate.querySelector('.btn-letter');
-    const answerText = answerTemplate.querySelector('.question-answer');
-
-    letterBtn.textContent = letters[index];
-    answerText.textContent = answer['answer'];
-
-    answerTemplate.setAttribute('correct-answer', answer['correct']);
-
-    // remover hide e template class
-    answerTemplate.classList.remove('hide');
-    answerTemplate.classList.remove('answer-template');
-
-    // inserir alternativa na tela
-    answerBox.appendChild(answerTemplate);
-  });
-
-  // Selecionar primeira alternativa automaticamente
-  const answerButtons = answerBox.querySelectorAll('button:not(.answer-template)');
-  currentSelectionIndex = 0;
-  if (answerButtons.length > 0) {
-    answerButtons[currentSelectionIndex].classList.add('selected-answer');
+  if (generatedQuestions.length === 0) {
+    alert('Selecione categorias válidas com perguntas!');
+    return;
   }
 
-  // incrementar o número da questão
+  document.getElementById('config-container').classList.add('hide');
+  document.getElementById('quizz-container').classList.remove('hide');
+  actualQuestion = 0;
+  points = 0;
+  createQuestion(0);
+});
+
+function createQuestion(i) {
+  const question = generatedQuestions[i];
+  const answerBox = document.querySelector('#answers-box');
+  answerBox.innerHTML = '';
+
+  document.getElementById('question-text').textContent = question.question;
+  document.getElementById('question-number').textContent = i + 1;
+
+  question.answers.forEach((answer, index) => {
+    const template = document.querySelector('.answer-template').cloneNode(true);
+    template.classList.remove('hide', 'answer-template');
+    template.querySelector('.btn-letter').textContent = letters[index];
+    template.querySelector('.question-answer').textContent = answer.answer;
+    template.setAttribute('correct-answer', answer.correct);
+    answerBox.appendChild(template);
+  });
+
+  currentSelectionIndex = 0;
+  answerBox.children[0].classList.add('selected-answer');
   actualQuestion++;
 }
 
-// verificar resposta do usuário
 function checkAnswer(btn) {
-  // seleciona todos os botões
-  const buttons = answerBox.querySelectorAll('button');
-
-  // verifica se resposta correta e add classe
-  buttons.forEach((button) => {
-    if (button.getAttribute('correct-answer') == 'true') {
-      button.classList.add('correct-answer');
-
-      // checa se usuário acertou a pergunta
-      if (btn === button) {
-        // incremento dos pontos
-        points++;
-      }
-    } else {
-      button.classList.add('wrong-answer');
-    }
+  const buttons = document.querySelectorAll('#answers-box button');
+  buttons.forEach(button => {
+    const isCorrect = button.getAttribute('correct-answer') === 'true';
+    button.classList.add(isCorrect ? 'correct-answer' : 'wrong-answer');
+    if (button === btn && isCorrect) points++;
   });
-
-  // exibir próxima pergunta
   nextQuestion();
 }
 
-// exibe a pŕoxima pergunta no quizz
 function nextQuestion() {
-  // timer para usuário ver as respostas
-  setTimeout(function () {
-    // verifica se ainda há perguntas
-    if (actualQuestion >= questions.length) {
-      // apresenta mensagem de sucesso
-      showSuccessMessage();
-      return;
-    }
-
-    createQuestion(actualQuestion);
+  setTimeout(() => {
+    if (actualQuestion >= generatedQuestions.length) showSuccessMessage();
+    else createQuestion(actualQuestion);
   }, 1200);
 }
 
-// exibe a tela final
 function showSuccessMessage() {
-  hideOrShowQuizz();
+  document.getElementById('quizz-container').classList.add('hide');
+  document.getElementById('score-container').classList.remove('hide');
 
-  // trocar dados tela de sucesso
-  // calcular score
-  const score = ((points / questions.length) * 100).toFixed(2);
-
-  const displayScore = document.querySelector('#display-score span');
-  displayScore.textContent = score.toString();
-
-  //alterar o número de perguntas corretas
-  const correctAnswers = document.querySelector('#correct-answers');
-  correctAnswers.textContent = points;
-
-  // alterar o total de perguntas
-  const totalQuestions = document.querySelector('#questions-qty');
-  totalQuestions.textContent = questions.length;
+  const score = ((points / generatedQuestions.length) * 100).toFixed(2);
+  document.querySelector('#display-score span').textContent = score;
+  document.getElementById('correct-answers').textContent = points;
+  document.getElementById('questions-qty').textContent = generatedQuestions.length;
 }
 
-// mostra ou esonde o score
-function hideOrShowQuizz() {
-  quizzContainer.classList.toggle('hide');
-  scoreContainer.classList.toggle('hide');
-}
-
-// reiniciar quizz
-const restartBtn = document.querySelector('#restart');
-restartBtn.addEventListener('click', function () {
-  //zerar jogo
-  actualQuestion = 0;
-  points = 0;
-  hideOrShowQuizz();
-  init();
+document.getElementById('restart').addEventListener('click', () => {
+  document.getElementById('config-container').classList.remove('hide');
+  document.getElementById('score-container').classList.add('hide');
 });
 
 function moveSelection(direction) {
-  const buttons = answerBox.querySelectorAll('button:not(.answer-template)');
-  const totalAnswers = buttons.length;
+  const buttons = document.querySelectorAll('#answers-box button');
+  const total = buttons.length;
 
-  // Remove seleção atual
   buttons[currentSelectionIndex].classList.remove('selected-answer');
 
-  // Atualiza índice com navegação circular
   if (direction === 'up') {
-    currentSelectionIndex = (currentSelectionIndex - 1 + totalAnswers) % totalAnswers;
-  } else if (direction === 'down') {
-    currentSelectionIndex = (currentSelectionIndex + 1) % totalAnswers;
+    currentSelectionIndex = (currentSelectionIndex - 1 + total) % total;
+  } else {
+    currentSelectionIndex = (currentSelectionIndex + 1) % total;
   }
 
-  // Aplica nova seleção
   buttons[currentSelectionIndex].classList.add('selected-answer');
 }
 
-// Função para confirmar seleção
 function confirmSelection() {
-  const buttons = answerBox.querySelectorAll('button:not(.answer-template)');
+  const buttons = document.querySelectorAll('#answers-box button');
   checkAnswer(buttons[currentSelectionIndex]);
 }
 
-// Inicialização do WebSocket
 const ws = new WebSocket('ws://' + window.location.host + '/api/ws');
-
-ws.onopen = () => {
-  console.log('WebSocket conectado');
+ws.onmessage = (e) => {
+  const msg = e.data.toLowerCase();
+  if (msg === 'up') moveSelection('up');
+  else if (msg === 'down') moveSelection('down');
+  else if (msg === 'confirm') confirmSelection();
 };
 
-ws.onmessage = (event) => {
-  const message = event.data.toLowerCase();
-
-  if (message === 'up') {
-    moveSelection('up');
-  } else if (message === 'down') {
-    moveSelection('down');
-  } else if (message === 'confirm') {
-    confirmSelection();
-  }
-};
-
-ws.onclose = () => {
-  console.log('WebSocket desconectado');
-};
-
-ws.onerror = (error) => {
-  console.error('WebSocket error:', error);
-};
-
-
-// inicialização do quizz
-init();

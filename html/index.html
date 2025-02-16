@@ -17,8 +17,29 @@
       <h1>Quizz</h1>
     </header>
     <main>
-      <!-- QUIZZ CONTAINER -->
-      <div id="quizz-container">
+      <div id="config-container">
+        <h2>Configurar Quizz</h2>
+        <form id="quiz-config">
+          <div class="form-group">
+            <label>Número de questões:</label>
+            <input type="number" id="total-questions" min="1" max="50" value="10" required>
+          </div>
+          <div class="form-group">
+            <label>Categorias:</label>
+            <div class="categories-list">
+              <label><input type="checkbox" name="category" value="conhecimentos_gerais" checked> Conhecimentos
+                Gerais</label>
+              <label><input type="checkbox" name="category" value="matematica"> Matemática</label>
+              <label><input type="checkbox" name="category" value="historia"> História</label>
+              <label><input type="checkbox" name="category" value="geografia"> Geografia</label>
+              <label><input type="checkbox" name="category" value="idiomas"> Idiomas</label>
+            </div>
+          </div>
+          <button type="submit">Iniciar Quizz</button>
+        </form>
+      </div>
+
+      <div id="quizz-container" class="hide">
         <p id="question">
           <span id="question-number">1</span> &#8212;
           <span id="question-text">Qual é a unidade de medida para metros?</span>
@@ -32,7 +53,6 @@
         </div>
       </div>
 
-      <!-- SCORE BOARD -->
       <div id="score-container" class="hide">
         <h2>Parabéns</h2>
         <p id="display-score"><span>90</span>%</p>
@@ -43,17 +63,10 @@
         <button id="restart">Refazer quizz!</button>
       </div>
 
-      <!-- TEMPLATE RESPOSTA -->
       <button class="answer-template hide">
         <span class="btn-letter"></span> <span class="question-answer"></span>
       </button>
     </main>
-    <footer>
-      <p>
-        <strong>Copyright</strong> &copy; 2024
-        <strong>EmbarcaTech</strong>
-      </p>
-    </footer>
   </div>
 </body>
 
