@@ -96,14 +96,14 @@ function createQuestion(i) {
   questionNumber.textContent = i + 1;
 
   // inserir alternativas
-  questions[i].answers.forEach((answer, i) => {
+  questions[i].answers.forEach((answer, index) => {
     // cria template botão quizz
     const answerTemplate = document.querySelector('.answer-template').cloneNode(true);
 
     const letterBtn = answerTemplate.querySelector('.btn-letter');
     const answerText = answerTemplate.querySelector('.question-answer');
 
-    letterBtn.textContent = letters[i];
+    letterBtn.textContent = letters[index];
     answerText.textContent = answer['answer'];
 
     answerTemplate.setAttribute('correct-answer', answer['correct']);
@@ -114,12 +114,14 @@ function createQuestion(i) {
 
     // inserir alternativa na tela
     answerBox.appendChild(answerTemplate);
-
-    // inserir evento click no botão
-    answerTemplate.addEventListener('click', function () {
-      checkAnswer(this);
-    });
   });
+
+  // Selecionar primeira alternativa automaticamente
+  const answerButtons = answerBox.querySelectorAll('button:not(.answer-template)');
+  currentSelectionIndex = 0;
+  if (answerButtons.length > 0) {
+    answerButtons[currentSelectionIndex].classList.add('selected-answer');
+  }
 
   // incrementar o número da questão
   actualQuestion++;
@@ -199,6 +201,58 @@ restartBtn.addEventListener('click', function () {
   hideOrShowQuizz();
   init();
 });
+
+function moveSelection(direction) {
+  const buttons = answerBox.querySelectorAll('button:not(.answer-template)');
+  const totalAnswers = buttons.length;
+
+  // Remove seleção atual
+  buttons[currentSelectionIndex].classList.remove('selected-answer');
+
+  // Atualiza índice com navegação circular
+  if (direction === 'up') {
+    currentSelectionIndex = (currentSelectionIndex - 1 + totalAnswers) % totalAnswers;
+  } else if (direction === 'down') {
+    currentSelectionIndex = (currentSelectionIndex + 1) % totalAnswers;
+  }
+
+  // Aplica nova seleção
+  buttons[currentSelectionIndex].classList.add('selected-answer');
+}
+
+// Função para confirmar seleção
+function confirmSelection() {
+  const buttons = answerBox.querySelectorAll('button:not(.answer-template)');
+  checkAnswer(buttons[currentSelectionIndex]);
+}
+
+// Inicialização do WebSocket
+const ws = new WebSocket('ws://' + window.location.host + '/api/ws');
+
+ws.onopen = () => {
+  console.log('WebSocket conectado');
+};
+
+ws.onmessage = (event) => {
+  const message = event.data.toLowerCase();
+
+  if (message === 'up') {
+    moveSelection('up');
+  } else if (message === 'down') {
+    moveSelection('down');
+  } else if (message === 'confirm') {
+    confirmSelection();
+  }
+};
+
+ws.onclose = () => {
+  console.log('WebSocket desconectado');
+};
+
+ws.onerror = (error) => {
+  console.error('WebSocket error:', error);
+};
+
 
 // inicialização do quizz
 init();

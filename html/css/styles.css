@@ -146,14 +146,15 @@ footer {
   border: none;
   text-align: left;
   color: #222222;
-  cursor: pointer;
+  /* cursor: pointer; */
   transition: 0.5s;
 }
 
+/* 
 #answers-box button:hover {
   background-color: #2a272a;
   color: #fff;
-}
+} */
 
 #answers-box .btn-letter {
   font-size: 30px;
@@ -195,10 +196,16 @@ footer {
 
 /* RESPONSIVO */
 @media (max-width: 450px) {
+
   #quizz-container,
   #score-container {
     border: none;
     width: 100%;
     box-shadow: none;
   }
+}
+
+.selected-answer {
+  border: 3px solid #058585 !important;
+  color: #fff;
 }
